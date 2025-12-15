@@ -165,7 +165,8 @@
                 }
 
                 try {
-                    const res = await fetch('http://localhost:3001/api/products');
+                    const baseUrl="https://style-next9.onrender.com"
+                    const res = await fetch(`${baseUrl}/api/products`);
                     if (!res.ok) throw new Error('Failed to fetch products');
 
                     const products = await res.json();
