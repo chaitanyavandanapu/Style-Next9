@@ -210,7 +210,7 @@
                 try {
                     // Fetch products for the specific category
                     const baseUrl="https://style-next9.onrender.com";
-                    const response = await fetch(`${ baseUrl="https://style-next9.onrender.com"}/api/products?category=${category}`);
+                    const response = await fetch(`${ baseUrl}/api/products?category=${category}`);
                     if (!response.ok) throw new Error('Failed to fetch products');
 
                     allProducts = await response.json();
