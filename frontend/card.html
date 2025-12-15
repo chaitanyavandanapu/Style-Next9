@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Definitive Product Card & Modal</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #0f0f0f;
+            --card-bg: #1a1a1a;
+            --text: #ffffff;
+            --muted: #888;
+            --accent: #4ecdc4;
+            --danger: #ff6b6b;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        /* ================= CARD ================= */
+        .product-card {
+            width: 350px;
+            background: var(--card-bg);
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+        }
+
+        /* ================= IMAGE & OVERLAYS ================= */
+        .image-container {
+            width: 100%;
+            height: 380px;
+            border-radius: 18px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .image-container img {
+            transform: scale(1.1);
+        }
+
+        .wishlist-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: var(--transition);
+        }
+
+        .wishlist-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .wishlist-icon {
+            width: 20px;
+            height: 20px;
+            stroke: #fff;
+            fill: transparent;
+            transition: var(--transition);
+        }
+
+        .wishlist-btn.active .wishlist-icon {
+            stroke: var(--danger);
+            fill: var(--danger);
+        }
+
+        .quick-view-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 10px 20px;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #000;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .product-card:hover .quick-view-btn {
+            opacity: 1;
+            transform: translate(-50%, -60%);
+        }
+
+        .quick-view-btn:hover {
+            background: #fff;
+        }
+
+        /* ================= CONTENT ================= */
+        .card-content {
+            padding: 20px;
+        }
+
+        .product-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .product-category {
+            font-size: 0.75rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .product-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 8px 0 16px;
+            color: var(--text);
+        }
+
+        /* ================= OPTIONS (SHARED) ================= */
+        .option-label {
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
+        .color-options,
+        .size-options {
+            display: flex;
+            gap: 10px;
+        }
+
+        .color-dot {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid var(--card-bg);
+            outline: 1px solid var(--muted);
+            transition: var(--transition);
+        }
+
+        .color-dot:hover {
+            transform: scale(1.2);
+        }
+
+        .color-dot.active {
+            outline-color: var(--accent);
+        }
+
+        .size-btn {
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            border: 1px solid var(--muted);
+            background: transparent;
+            color: #fff;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .size-btn:hover {
+            border-color: var(--accent);
+        }
+
+        .size-btn.active {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+
+        /* ================= MODAL ================= */
+        .product-modal {
+            position: fixed;
+            inset: 0;
+            display: none;
+            z-index: 100;
+        }
+
+        .product-modal.active {
+            display: block;
+        }
+
+        .modal-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            position: relative;
+            width: 90vw;
+            max-width: 900px;
+            height: 90vh;
+            max-height: 600px;
+            margin: auto;
+            top: 5vh;
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 24px;
+            animation: scaleIn 0.3s ease-out;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2.5rem;
+            background: none;
+            border: none;
+            color: var(--muted);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .modal-close:hover {
+            color: #fff;
+        }
+
+        .modal-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            height: 100%;
+        }
+
+        .modal-image {
+            height: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .modal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-details {
+            display: flex;
+            flex-direction: column;
+            padding: 10px 0;
+            justify-content: space-between;
+        }
+
+        .modal-details .product-title {
+            font-size: 2rem;
+            color: var(--text);
+        }
+
+        .modal-details .product-price {
+            font-size: 1.8rem;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .modal-description {
+            color: var(--muted);
+            margin-bottom: auto;
+            line-height: 1.6;
+        }
+
+        .add-to-cart-btn {
+            padding: 16px;
+            border-radius: 12px;
+            border: none;
+            background: var(--accent);
+            color: #000;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .add-to-cart-btn:hover {
+            background: #61e6da;
+            transform: scale(1.02);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- The Product Card Component -->
+    <div class="product-card"></div>
+
+    <!-- The Product Modal Component (Initially Hidden) -->
+    <div class="product-modal"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- DATA: In a real app, this would come from your API/database ---
+            const productData = {
+                id: 'prod12345',
+                name: 'Classic Cotton Tee',
+                category: 'T-Shirts',
+                price: 29.99,
+                description: 'Crafted from 100% premium Peruvian Pima cotton, this tee offers unparalleled softness and durability. A timeless wardrobe essential for any occasion.',
+                sizes: ['S', 'M', 'L', 'XL'],
+                colors: [
+                    { name: 'Red', hex: '#ff6b6b', image: 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80' },
+                    { name: 'Blue', hex: '#4ecdc4', image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80' },
+                    { name: 'Black', hex: '#111111', image: 'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80' }
+                ]
+            };
+
+            // --- WISHLIST LOGIC ---
+            const WISHLIST_KEY = 'vogue_wishlist';
+            const getWishlist = () => JSON.parse(localStorage.getItem(WISHLIST_KEY)) || [];
+            const saveWishlist = (list) => localStorage.setItem(WISHLIST_KEY, JSON.stringify(list));
+
+            // --- ELEMENT REFERENCES ---
+            const cardContainer = document.querySelector('.product-card');
+            const modalContainer = document.querySelector('.product-modal');
+
+            // --- RENDER FUNCTIONS ---
+            function renderCard(product) {
+                cardContainer.dataset.productId = product.id;
+                cardContainer.innerHTML = `
+                    <div class="image-container">
+                        <img src="${product.colors[0].image}" alt="${product.name}">
+                        <button class="wishlist-btn">
+                            <svg class="wishlist-icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        </button>
+                        <button class="quick-view-btn">Quick View</button>
+                    </div>
+                    <div class="card-content">
+                        <div class="product-info">
+                            <p class="product-category">${product.category}</p>
+                            <p class="product-price">₹${product.price.toFixed(2)}</p>
+                        </div>
+                        <h2 class="product-title">${product.name}</h2>
+                        <p class="option-label">Colors</p>
+                        <div class="color-options">
+                            ${product.colors.map((color, index) => `<span class="color-dot ${index === 0 ? 'active' : ''}" style="background-color: ${color.hex};" data-image="${color.image}"></span>`).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            function renderModal(product) {
+                modalContainer.innerHTML = `
+                    <div class="modal-overlay"></div>
+                    <div class="modal-content">
+                        <button class="modal-close">&times;</button>
+                        <div class="modal-body">
+                            <div class="modal-image"><img src="${product.colors[0].image}" alt="${product.name}"></div>
+                            <div class="modal-details">
+                                <div>
+                                    <p class="product-category">${product.category}</p>
+                                    <h2 class="product-title">${product.name}</h2>
+                                    <p class="product-price">₹${product.price.toFixed(2)}</p>
+                                    <p class="modal-description">${product.description}</p>
+                                    <p class="option-label">Colors</p>
+                                    <div class="color-options">
+                                        ${product.colors.map((color, index) => `<span class="color-dot ${index === 0 ? 'active' : ''}" style="background-color: ${color.hex};" data-image="${color.image}"></span>`).join('')}
+                                    </div>
+                                    <p class="option-label" style="margin-top: 20px;">Sizes</p>
+                                    <div class="size-options">
+                                        ${product.sizes.map((size, index) => `<button class="size-btn ${index === 0 ? 'active' : ''}">${size}</button>`).join('')}
+                                    </div>
+                                </div>
+                                <button class="add-to-cart-btn">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>`;
+            }
+
+            // --- EVENT HANDLING ---
+            function setupEventListeners() {
+                const wishlistBtn = cardContainer.querySelector('.wishlist-btn');
+                const quickViewBtn = cardContainer.querySelector('.quick-view-btn');
+
+                // Wishlist Toggle
+                wishlistBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    let list = getWishlist();
+                    const id = cardContainer.dataset.productId;
+                    if (list.includes(id)) {
+                        list = list.filter(itemId => itemId !== id);
+                        wishlistBtn.classList.remove('active');
+                    } else {
+                        list.push(id);
+                        wishlistBtn.classList.add('active');
+                    }
+                    saveWishlist(list);
+                });
+
+                // Open Modal
+                quickViewBtn.addEventListener('click', () => {
+                    modalContainer.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                });
+
+                // Close Modal
+                modalContainer.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('modal-overlay') || e.target.classList.contains('modal-close')) {
+                        modalContainer.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+
+                // Color switching (Card)
+                cardContainer.querySelectorAll('.color-dot').forEach(dot => {
+                    dot.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        cardContainer.querySelector('img').src = e.target.dataset.image;
+                        cardContainer.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+                        e.target.classList.add('active');
+                    });
+                });
+
+                // Options switching (Modal)
+                modalContainer.addEventListener('click', (e) => {
+                    const target = e.target;
+                    // Colors
+                    if (target.classList.contains('color-dot')) {
+                        modalContainer.querySelector('.modal-image img').src = target.dataset.image;
+                        modalContainer.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+                        target.classList.add('active');
+                    }
+                    // Sizes
+                    if (target.classList.contains('size-btn')) {
+                        modalContainer.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+                        target.classList.add('active');
+                    }
+                });
+            }
+
+            // --- INITIALIZATION ---
+            function init() {
+                renderCard(productData);
+                renderModal(productData);
+
+                // Set initial wishlist state
+                const wishlistBtn = cardContainer.querySelector('.wishlist-btn');
+                if (getWishlist().includes(cardContainer.dataset.productId)) {
+                    wishlistBtn.classList.add('active');
+                }
+
+                setupEventListeners();
+            }
+
+            init();
+        });
+    </script>
+</body>
+
+</html>

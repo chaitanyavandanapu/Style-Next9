@@ -1,247 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Home</title>
-    <style>
-      * {
-        padding: 0;
-        margin: 0;
-        box-sizing: border-box;
-      }
-      html,
-      body {
-        font-family: "Arial", sans-serif;
-        background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
-        color: #fff;
-        padding: 20px 10px;
-        min-height: 100vh;
-      }
-      .header {
-        text-align: center;
-        margin-bottom: 40px;
-      }
-      .header-content {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 20px;
-        flex-wrap: wrap;
-      }
-      .title-group {
-        text-align: left;
-      }
-      .header h1 {
-        font-size: 2.5rem;
-        background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        margin-bottom: 5px;
-      }
-      .header p {
-        color: #aaa;
-        font-size: 1.1rem;
-      }
-      .home-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background: linear-gradient(45deg, #1a1919, #798080);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        transition: all 0.3s ease;
-        text-decoration: none;
-      }
-      .home-btn:hover {
-        transform: scale(1.1);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-      }
-      .home-icon {
-        width: 24px;
-        height: 24px;
-        fill: #ffffff;
-      }
-      .main {
-        display: flex;
-        flex-wrap: wrap;
-        width: 95%;
-        margin: 0 auto;
-        justify-content: space-between;
-        padding: 1rem 0;
-        row-gap: 1rem;
-      }
-      .child {
-        width: 32%;
-        height: 320px;
-        position: relative;
-        border-radius: 20px;
-        overflow: hidden;
-        cursor: pointer;
-        transition: transform 0.3s ease;
-      }
-      .child .img-wrapper {
-        width: 100%;
-        height: 100%;
-        background-color: black;
-        transition: opacity 0.3s ease;
-      }
-      .child img {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center center;
-        z-index: 0;
-        transition: transform 0.3s ease;
-      }
-      .wrapper {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: white;
-        z-index: 1;
-        text-align: center;
-        font-size: 1.5rem;
-        font-weight: bold;
-      }
-      .child:hover .img-wrapper {
-        opacity: 0.65;
-      }
-      .child:hover {
-        transform: translateY(-10px);
-      }
-      .child:hover img {
-        transform: scale(1.05);
-      }
-      @media only screen and (max-width: 600px) {
-        body {
-          margin: 0;
-          padding: 0;
-        }
-        .header h1 {
-          font-size: 1.8rem;
-        }
-        .main {
-          width: 100%;
-          padding: 10px;
-        }
-        .child {
-          height: 180px;
-          width: 48%;
-        }
-        .wrapper {
-          font-size: 0.9rem;
-        }
-      }
-    </style>
-  </head>
 
-  <body>
-    <div class="header">
-      <div class="header-content">
-        <div class="title-group">
-          <h1>Our Collection</h1>
-          <p>Discover our premium clothing range</p>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Style Next | Timeless Fashion</title>
+
+  <!-- Google Fonts: Montserrat for a premium look -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="./frontend/css/index.css" />
+</head>
+
+<body>
+
+  <!-- Section 1: Global Header -->
+  <header class="global-header">
+    <div class="container nav-container">
+      <a href="./index.html" class="logo">Style Next </a>
+      <nav class="nav-links">
+        <!-- Home Icon -->
+        <a href="./index.html" class="active" aria-label="Home">
+          <i class="fa-solid fa-house"></i>
+        </a>
+
+        <a href="./wishlist.html" class="wishlist" data-count="3" aria-label="Wishlist">
+          <i class="fa-solid fa-heart"></i>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Section 2: Hero Section -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Elegance in Every Thread</h1>
+        <p>Discover our curated collection of timeless styles, designed for the modern individual.</p>
+        <a href="#collections" class="cta-button">Explore Collections</a>
+      </div>
+    </section>
+
+    <!-- Section 3: Collections Section -->
+    <section id="collections" class="collections-section">
+      <div class="container">
+        <h2 class="section-title">Our Collections</h2>
+        <div class="category-grid">
+
+          <!-- Card 1: Shirts -->
+          <a href="./frontend/category.html?category=shirts" class="category-card">
+            <img src="./frontend/images/main/1. shirts.jpeg" alt="Shirts Collection" loading="lazy" />
+            <div class="card-overlay"></div>
+            <div class="card-content"><span class="card-title">Shirts</span></div>
+          </a>
+
+          <!-- Card 2: Sarees -->
+          <a href="./frontend/category.html?category=sarees" class="category-card">
+            <img src="./frontend/images/main/2.sarees.jpeg" alt="Sarees Collection" loading="lazy" />
+            <div class="card-overlay"></div>
+            <div class="card-content"><span class="card-title">Sarees</span></div>
+          </a>
+
+          <!-- Card 3: Dresses -->
+          <a href="./frontend/category.html?category=dresses" class="category-card">
+            <img src="./frontend/images/main/3. dresses.jpeg" alt="Dresses Collection" loading="lazy" />
+            <div class="card-overlay"></div>
+            <div class="card-content"><span class="card-title">Dresses</span></div>
+          </a>
+
+          <!-- Card 4: Kids Wear -->
+          <a href="./frontend/category.html?category=kids wear" class="category-card">
+            <img src="./frontend/images/main/4.kids wear.jpeg" alt="Kids Wear Collection" loading="lazy" />
+            <div class="card-overlay"></div>
+            <div class="card-content"><span class="card-title">Kids Wear</span></div>
+          </a>
+
+          <!-- Card 5: Kurtas -->
+          <a href="./frontend/category.html?category=kurthas" class="category-card">
+            <img src="./frontend/images/main/5.kurtas.jpeg" alt="Kurtas Collection" loading="lazy" />
+            <div class="card-overlay"></div>
+            <div class="card-content"><span class="card-title">Kurtas</span></div>
+          </a>
+
+          <!-- Card 6: Jeans -->
+          <a href="./frontend/category.html?category=jeans" class="category-card">
+            <img src="./frontend/images/main/6.jeans.jpeg" alt="Jeans Collection" loading="lazy" />
+            <div class="card-overlay"></div>
+            <div class="card-content"><span class="card-title">Jeans</span></div>
+          </a>
+
+          <!-- Card 7: T-Shirts -->
+          <a href="./frontend/category.html?category=t-shirts" class="category-card">
+            <img src="./frontend/images/main/7.t-shirts.jpeg" alt="T-Shirts Collection" loading="lazy" />
+            <div class="card-overlay"></div>
+            <div class="card-content"><span class="card-title">T-Shirts</span></div>
+          </a>
+
+          <!-- Card 8: Dhoties -->
+          <a href="./frontend/category.html?category=dhooties" class="category-card">
+            <img src="./frontend/images/main/8. dhoties.jpeg" alt="Dhoties Collection" loading="lazy" />
+            <div class="card-overlay"></div>
+            <div class="card-content"><span class="card-title">Dhoties</span></div>
+          </a>
+
+          <!-- Card 9: Tops -->
+          <a href="./frontend/category.html?category=tops" class="category-card">
+            <img src="./frontend/images/main/9.tops.jpeg" alt="Tops Collection" loading="lazy" />
+            <div class="card-overlay"></div>
+            <div class="card-content"><span class="card-title">Tops</span></div>
+          </a>
+
         </div>
-        <a href="./index.html" class="home-btn" title="Return to Home" aria-label="Home">
-          <svg
-            viewBox="0 0 24 24"
-            class="home-icon"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+      </div>
+    </section>
+  </main>
+
+  <!-- Section 4: Global Footer -->
+  <footer class="global-footer">
+    <div class="container footer-content">
+      <div class="social-links">
+        <!-- Replace # with your actual social media links -->
+        <a href="#" aria-label="Instagram">
+          <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path
+              d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z" />
+          </svg>
+        </a>
+        <a href="#" aria-label="Facebook">
+          <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path
+              d="M12 2.04C6.5 2.04 2 6.53 2 12.06C2 17.06 5.66 21.21 10.44 21.96V14.96H7.9V12.06H10.44V9.81C10.44 7.31 11.93 5.96 14.22 5.96C15.31 5.96 16.45 6.15 16.45 6.15V8.62H15.19C13.95 8.62 13.56 9.39 13.56 10.18V12.06H16.34L15.89 14.96H13.56V21.96A10 10 0 0 0 22 12.06C22 6.53 17.5 2.04 12 2.04Z" />
+          </svg>
+        </a>
+        <a href="#" aria-label="Twitter">
+          <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path
+              d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 2.9,4.79C2.53,5.42 2.33,6.15 2.33,6.94C2.33,8.43 3.1,9.75 4.18,10.56C3.46,10.54 2.82,10.34 2.26,10.03C2.26,10.05 2.26,10.07 2.26,10.09C2.26,12.27 3.79,14.09 5.88,14.54C5.53,14.63 5.16,14.68 4.78,14.68C4.5,14.68 4.23,14.65 3.98,14.61C4.54,16.41 6.17,17.72 8.12,17.75C6.63,18.91 4.74,19.64 2.7,19.64C2.35,19.64 2,19.62 1.66,19.58C3.62,20.88 5.94,21.62 8.44,21.62C16.02,21.62 20.24,15.31 20.24,9.74C20.24,9.55 20.24,9.37 20.23,9.18C21.05,8.57 21.83,7.82 22.46,6Z" />
           </svg>
         </a>
       </div>
+      <p class="copyright">&copy; 2025 Style Next . All Rights Reserved.</p>
     </div>
+  </footer>
 
-    <div class="main">
-      <div class="child">
-        <a href="./category.html?category=shirts">
-          <div class="img-wrapper">
-            <img src="./images/main/1. shirts.jpeg" alt="shirts" />
-          </div>
-          <div class="wrapper">Shirts</div>
-        </a>
-      </div>
+</body>
 
-      <div class="child">
-        <a href="./category.html?category=sarees">
-          <div class="img-wrapper">
-            <img src="./images/main/2.sarees.jpeg" alt="sarees" />
-          </div>
-          <div class="wrapper">Sarees</div>
-        </a>
-      </div>
-
-      <div class="child">
-        <a href="./category.html?category=dresses">
-          <div class="img-wrapper">
-            <img src="./images/main/3. dresses.jpeg" alt="dresses" />
-          </div>
-          <div class="wrapper">Dresses</div>
-        </a>
-      </div>
-
-      <div class="child">
-        <a href="./category.html?category=kids wear">
-          <div class="img-wrapper">
-            <img src="./images/main/4.kids wear.jpeg" alt="kids wear" />
-          </div>
-          <div class="wrapper">Kids Wear</div>
-        </a>
-      </div>
-
-      <div class="child">
-        <a href="./category.html?category=kurthas">
-          <div class="img-wrapper">
-            <img src="./images/main/5.kurtas.jpeg" alt="kurtas" />
-          </div>
-          <div class="wrapper">Kurtas</div>
-        </a>
-      </div>
-
-      <div class="child">
-        <a href="./category.html?category=jeans">
-          <div class="img-wrapper">
-            <img src="./images/main/6.jeans.jpeg" alt="jeans" />
-          </div>
-          <div class="wrapper">Jeans</div>
-        </a>
-      </div>
-
-      <div class="child">
-        <a href="./category.html?category=t-shirts">
-          <div class="img-wrapper">
-            <img src="./images/main/7.t-shirts.jpeg" alt="t-shirts" />
-          </div>
-          <div class="wrapper">T-Shirts</div>
-        </a>
-      </div>
-
-      <div class="child">
-        <a href="./category.html?category=dhooties">
-          <div class="img-wrapper">
-            <img src="./images/main/8. dhoties.jpeg" alt="dhoties" />
-          </div>
-          <div class="wrapper">Dhoties</div>
-        </a>
-      </div>
-
-      <div class="child">
-        <a href="./category.html?category=tops">
-          <div class="img-wrapper">
-            <img src="./images/main/9.tops.jpeg" alt="Night Wear" />
-          </div>
-          <div class="wrapper">Tops</div>
-        </a>
-      </div>
-      </body>
 </html>

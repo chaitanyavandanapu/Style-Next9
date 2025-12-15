@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel | Add Product Variants</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===== YOUR ORIGINAL CSS – UNTOUCHED ===== */
+        :root {
+            --bg-color: #121212;
+            --primary-color: #1f1f1f;
+            --secondary-color: #2a2a2a;
+            --text-color: #e0e0e0;
+            --accent-color: #4ecdc4;
+            --danger-color: #ff6b6b;
+            --border-color: #444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: #888;
+            margin-bottom: 40px
+        }
+
+        .upload-panel {
+            background: var(--primary-color);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color)
+        }
+
+        .upload-panel h2 {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px
+        }
+
+        .form-group {
+            margin-bottom: 20px
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: .9rem
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: var(--secondary-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-color)
+        }
+
+        .variant-group {
+            background: var(--secondary-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--accent-color);
+            position: relative
+        }
+
+        .variant-header {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap
+        }
+
+        .variant-header .form-group {
+            flex: 1;
+            min-width: 150px
+        }
+
+        .color-picker-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        input[type="color"] {
+            width: 48px;
+            height: 48px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer
+        }
+
+        .variant-drop-zone {
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .variant-drop-zone.drag-over {
+            border-color: var(--accent-color);
+            background: rgba(78, 205, 196, .1)
+        }
+
+        .preview-img {
+            max-width: 100%;
+            max-height: 150px;
+            border-radius: 4px
+        }
+
+        .variant-drop-zone input {
+            display: none
+        }
+
+        .remove-variant-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--danger-color);
+            color: #fff;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold
+        }
+
+        .default-option {
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        #add-variant-btn {
+            width: 100%;
+            padding: 12px;
+            border: 1px dashed var(--accent-color);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--accent-color);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            margin-top: 30px;
+            background: var(--accent-color);
+            color: #121212;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Admin Dashboard</h1>
+            <p>Add new items with multiple color options and images.</p>
+        </header>
+
+        <main class="upload-panel">
+            <form id="upload-form">
+                <h2>Product Details</h2>
+
+                <div class="form-group">
+                    <label>Product Name</label>
+                    <input id="product-name" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="product-category" required>
+                        <option value="" disabled selected>Select a category...</option>
+                        <option value="shirts">Shirts</option>
+                        <option value="sarees">Sarees</option>
+                        <option value="dresses">Dresses</option>
+                        <option value="kids wear">Kids Wear</option>
+                        <option value="kurthas">Kurthas</option>
+                        <option value="jeans">Jeans</option>
+                        <option value="t-shirts">T-Shirts</option>
+                        <option value="dhooties">Dhoties</option>
+                        <option value="tops">Tops</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Price</label>
+                    <input id="product-price" type="number" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="product-description"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Sizes (comma separated)</label>
+                    <input id="product-sizes">
+                </div>
+
+                <h2>Color Variants</h2>
+                <div id="variants-container"></div>
+
+                <button type="button" id="add-variant-btn">[+] Add Color Variant</button>
+                <button class="submit-btn">Add Product</button>
+            </form>
+        </main>
+
+        <section class="upload-panel" style="margin-top:40px">
+            <h2>Existing Products</h2>
+            <div id="products-list"></div>
+        </section>
+    </div>
+
+    <script>
+        const API = 'http://localhost:3001/api/products';
+        const variantsContainer = document.getElementById('variants-container');
+        const addBtn = document.getElementById('add-variant-btn');
+        const form = document.getElementById('upload-form');
+        const productsList = document.getElementById('products-list');
+        const variantFiles = new Map();
+        let count = 0;
+
+        function addVariant() {
+            count++;
+            const id = `v_${count}`;
+            const div = document.createElement('div');
+            div.className = 'variant-group'; div.id = id;
+            div.innerHTML = `
+<button class="remove-variant-btn">&times;</button>
+<div class="variant-header">
+<div class="form-group"><label>Color Name</label><input class="cname"></div>
+<div class="form-group"><label>Color</label><input type="color" class="chex"></div>
+</div>
+<div class="variant-drop-zone"><p>Drop or click</p><input type="file" accept="image/*"></div>
+<div class="default-option"><input type="radio" name="default"> Default</div>`;
+            variantsContainer.appendChild(div);
+        }
+        addVariant(); addBtn.onclick = addVariant;
+
+        variantsContainer.onclick = e => {
+            if (e.target.classList.contains('remove-variant-btn')) {
+                variantFiles.delete(e.target.closest('.variant-group').id);
+                e.target.closest('.variant-group').remove();
+            }
+            if (e.target.closest('.variant-drop-zone')) {
+                e.target.closest('.variant-drop-zone').querySelector('input').click();
+            }
+        };
+
+        variantsContainer.onchange = e => {
+            if (e.target.type === 'file') {
+                const file = e.target.files[0];
+                const dz = e.target.closest('.variant-drop-zone');
+                variantFiles.set(e.target.closest('.variant-group').id, file);
+                const r = new FileReader();
+                r.onload = () => dz.innerHTML = `<img src="${r.result}" class="preview-img">`;
+                r.readAsDataURL(file);
+            }
+        };
+
+        form.onsubmit = async e => {
+            e.preventDefault();
+            const fd = new FormData();
+            fd.append('name', document.getElementById('product-name').value);
+            fd.append('category', document.getElementById('product-category').value);
+            fd.append('price', document.getElementById('product-price').value);
+            fd.append('description', document.getElementById('product-description').value);
+
+            const sizes = document
+                .getElementById('product-sizes')
+                .value
+                .split(',')
+                .map(s => s.trim());
+
+            fd.append('sizes', JSON.stringify(sizes));
+
+            const colors = []; let def = -1; let i = 0;
+            document.querySelectorAll('.variant-group').forEach(g => {
+                fd.append('productImages', variantFiles.get(g.id));
+                colors.push({ name: g.querySelector('.cname').value, hexCode: g.querySelector('.chex').value });
+                if (g.querySelector('input[type=radio]').checked) def = i;
+                i++;
+            });
+            fd.append('colors', JSON.stringify(colors));
+            fd.append('defaultImageIndex', def);
+
+            await fetch(API, { method: 'POST', body: fd });
+            alert('Product added');
+            form.reset(); variantsContainer.innerHTML = ''; variantFiles.clear(); addVariant(); loadProducts();
+        };
+
+        async function loadProducts() {
+            productsList.innerHTML = '';
+            const res = await fetch(API); const data = await res.json();
+            data.forEach(p => {
+                const d = document.createElement('div');
+                d.className = 'variant-group';
+                d.innerHTML = `<b>${p.name}</b> — $${p.price}
+<button class="remove-variant-btn">×</button>`;
+                d.querySelector('button').onclick = async () => {
+                    if (confirm('Delete?')) {
+                        await fetch(`${API}/${p._id}`, { method: 'DELETE' });
+                        loadProducts();
+                    }
+                };
+                productsList.appendChild(d);
+            });
+        }
+        loadProducts();
+    </script>
+</body>
+
+</html>

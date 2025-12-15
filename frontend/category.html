@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Category | Style Next </title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/category.css" />
+    <!-- <link rel="stylesheet" href="./css/index.css"> -->
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="global-header">
+        <div class="nav-container">
+            <a href="../index.html" class="logo">Style Next </a>
+            <nav class="nav-links">
+                <a href="../index.html" aria-label="Home"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24">
+                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                    </svg></a>
+                <a href="./wishlist.html" aria-label="Wishlist"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24">
+                        <path
+                            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                    </svg></a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="category-section">
+            <div class="container">
+                <h1 id="category-title" class="section-title">Loading...</h1>
+                <p id="category-subtitle" class="section-subtitle">Discover our premium clothing range</p>
+
+                <!-- This grid will be populated by JavaScript -->
+                <div class="product-grid" id="product-grid"></div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Container (will be populated by JS) -->
+    <div class="product-modal" id="product-modal"></div>
+
+    <!-- Footer -->
+    <footer class="global-footer">
+        <div class="footer-content">
+            <div class="social-links">
+                <a href="#"><svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path
+                            d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z" />
+                    </svg></a>
+                <a href="#"><svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path
+                            d="M12 2.04C6.5 2.04 2 6.53 2 12.06C2 17.06 5.66 21.21 10.44 21.96V14.96H7.9V12.06H10.44V9.81C10.44 7.31 11.93 5.96 14.22 5.96C15.31 5.96 16.45 6.15 16.45 6.15V8.62H15.19C13.95 8.62 13.56 9.39 13.56 10.18V12.06H16.34L15.89 14.96H13.56V21.96A10 10 0 0 0 22 12.06C22 6.53 17.5 2.04 12 2.04Z" />
+                    </svg></a>
+            </div>
+            <p class="copyright">&copy; 2025 VOGUE. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const productGrid = document.getElementById('product-grid');
+            const modalContainer = document.getElementById('product-modal');
+            const categoryTitle = document.getElementById('category-title');
+
+            let allProducts = []; // To store fetched products for modal lookup
+
+            // --- WISHLIST LOGIC ---
+            const WISHLIST_KEY = 'vogue_wishlist';
+            const getWishlist = () => JSON.parse(localStorage.getItem(WISHLIST_KEY)) || [];
+            const saveWishlist = (list) => localStorage.setItem(WISHLIST_KEY, JSON.stringify(list));
+
+            // --- RENDER FUNCTIONS ---
+            function createProductCard(product) {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.dataset.productId = product._id;
+
+                const wishlist = getWishlist();
+                const inWishlist = wishlist.includes(product._id);
+
+                card.innerHTML = `
+                <div class="image-container">
+                    <img src="${product.colors[product.defaultImageIndex]?.imageUrl}" alt="${product.name}">
+                    <button class="wishlist-btn ${inWishlist ? 'active' : ''}">
+                        <svg class="wishlist-icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                    </button>
+                    <button class="quick-view-btn">Quick View</button>
+                </div>
+                <div class="card-content">
+                    <div class="product-info">
+                        <p class="product-category">${product.category}</p>
+                        <p class="product-price">₹${product.price.toFixed(2)}</p>
+                    </div>
+                    <h2 class="product-title">${product.name}</h2>
+                    <p class="option-label">Colors</p>
+                    <div class="color-options">
+                        ${product.colors.map((color, index) => `<span class="color-dot ${index === 0 ? 'active' : ''}" style="background-color: ${color.hexCode};" data-image="${color.imageUrl}"></span>`).join('')}
+                    </div>
+                </div>`;
+                return card;
+            }
+
+            function renderModal(product) {
+                console.log('Rendering modal for product:', product);
+                modalContainer.innerHTML = `
+                <div class="modal-overlay"></div>
+                <div class="modal-content">
+                    <button class="modal-close">&times;</button>
+                    <div class="modal-body">
+                        <div class="modal-image"><img src="${product.colors[0]?.imageUrl}" alt="${product.name}"></div>
+                        <div class="modal-details">
+                            <div>
+                                <p class="product-category">${product.category}</p>
+                                <h2 class="product-title">${product.name}</h2>
+                                <p class="product-price">₹${product.price.toFixed(2)}</p>
+                                <p class="modal-description">${product.description || ''}</p>
+                                <p class="option-label">Colors</p>
+                                <div class="color-options">
+                                    ${product.colors.map((color, index) => `<span class="color-dot ${index === 0 ? 'active' : ''}" style="background-color: ${color.hexCode};" data-image="${color.imageUrl}"></span>`).join('')}
+                                </div>
+                                <p class="option-label" style="margin-top: 20px;">Sizes</p>
+                                <div class="size-options">
+                                    ${product.sizes.map((size, index) => `<button class="size-btn ${index === 0 ? 'active' : ''}">${size}</button>`).join('')}
+                                </div>
+                            </div>
+                            <button class="add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>`;
+                modalContainer.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            // --- EVENT HANDLING (using delegation) ---
+            productGrid.addEventListener('click', (e) => {
+                const card = e.target.closest('.product-card');
+                if (!card) return;
+
+                const productId = card.dataset.productId;
+
+                // Handle Quick View Button
+                if (e.target.matches('.quick-view-btn')) {
+                    const product = allProducts.find(p => p._id === productId);
+                    if (product) renderModal(product);
+                }
+
+                // Handle Wishlist Button
+                if (e.target.closest('.wishlist-btn')) {
+                    const wishlistBtn = e.target.closest('.wishlist-btn');
+                    let list = getWishlist();
+                    if (list.includes(productId)) {
+                        list = list.filter(id => id !== productId);
+                        wishlistBtn.classList.remove('active');
+                    } else {
+                        list.push(productId);
+                        wishlistBtn.classList.add('active');
+                    }
+                    saveWishlist(list);
+                }
+
+                // Handle Color Dots on Card
+                if (e.target.matches('.color-dot')) {
+                    card.querySelector('.image-container img').src = e.target.dataset.image;
+                    card.querySelectorAll('.color-dot').forEach(dot => dot.classList.remove('active'));
+                    e.target.classList.add('active');
+                }
+            });
+
+            // Modal Event Handling
+            modalContainer.addEventListener('click', (e) => {
+                // Close Modal
+                if (e.target.matches('.modal-overlay, .modal-close')) {
+                    modalContainer.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+                // Handle options inside modal
+                if (e.target.matches('.color-dot')) {
+                    modalContainer.querySelector('.modal-image img').src = e.target.dataset.image;
+                    modalContainer.querySelectorAll('.color-dot').forEach(dot => dot.classList.remove('active'));
+                    e.target.classList.add('active');
+                }
+                if (e.target.matches('.size-btn')) {
+                    modalContainer.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+                    e.target.classList.add('active');
+                }
+            });
+
+            // --- MAIN FETCH AND RENDER FUNCTION ---
+            async function loadCategoryProducts() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const category = urlParams.get('category');
+
+                if (!category) {
+                    categoryTitle.textContent = 'No Category Selected';
+                    return;
+                }
+
+                categoryTitle.textContent = category; // Set title immediately
+
+                try {
+                    // Fetch products for the specific category
+                    const response = await fetch(`http://localhost:3001/api/products?category=${category}`);
+                    if (!response.ok) throw new Error('Failed to fetch products');
+
+                    allProducts = await response.json();
+
+                    productGrid.innerHTML = '';
+
+                    if (allProducts.length === 0) {
+                        productGrid.innerHTML = `<p>No products found in this category yet.</p>`;
+                        return;
+                    }
+
+                    allProducts.forEach(product => {
+                        const cardElement = createProductCard(product);
+                        productGrid.appendChild(cardElement);
+                    });
+
+                } catch (error) {
+                    console.error('Error loading products:', error);
+                    productGrid.innerHTML = `<p>There was an error loading products. Please try again later.</p>`;
+                }
+            }
+
+            loadCategoryProducts();
+        });
+    </script>
+</body>
+
+</html>

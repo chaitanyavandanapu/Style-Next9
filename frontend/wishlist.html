@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wishlist | Style Next </title>
+
+    <!-- Google Fonts: Montserrat (same as index.html) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./css/wishlist.css" />
+</head>
+
+<body>
+
+    <!-- Section 1: Global Header (Same as index.html) -->
+    <header class="global-header">
+        <div class="container nav-container">
+            <a href="./index.html" class="logo">Style Next </a>
+            <nav class="nav-links">
+                <!-- Home Icon -->
+                <a href="../index.html" class="active" aria-label="Home">
+                    <i class="fa-solid fa-house"></i>
+                </a>
+
+                <a href="./wishlist.html" class="wishlist" data-count="3" aria-label="Wishlist">
+                    <i class="fa-solid fa-heart"></i>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Section 2: Wishlist Content -->
+        <section class="wishlist-section">
+            <div class="container">
+                <h1 class="section-title">My Wishlist</h1>
+
+                <!-- This grid will be filled by JavaScript -->
+                <div id="wishlist-grid"></div>
+
+                <!-- This view is shown only if the wishlist is empty -->
+                <div id="empty-wishlist-view">
+                    <h2>Your Wishlist is Currently Empty</h2>
+                    <p>Looks like you haven't added any items yet. Explore our collections to find something you'll
+                        love!</p>
+                    <a href="./index.html" class="shop-now-btn">Continue Shopping</a>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Section 3: Global Footer (Same as index.html) -->
+    <footer class="global-footer">
+        <div class="container footer-content">
+            <div class="social-links">
+                <a href="#" aria-label="Instagram"><svg class="social-icon" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24">
+                        <path
+                            d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z" />
+                    </svg></a>
+                <a href="#" aria-label="Facebook"><svg class="social-icon" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24">
+                        <path
+                            d="M12 2.04C6.5 2.04 2 6.53 2 12.06C2 17.06 5.66 21.21 10.44 21.96V14.96H7.9V12.06H10.44V9.81C10.44 7.31 11.93 5.96 14.22 5.96C15.31 5.96 16.45 6.15 16.45 6.15V8.62H15.19C13.95 8.62 13.56 9.39 13.56 10.18V12.06H16.34L15.89 14.96H13.56V21.96A10 10 0 0 0 22 12.06C22 6.53 17.5 2.04 12 2.04Z" />
+                    </svg></a>
+            </div>
+            <p class="copyright">&copy; 2025 VOGUE. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const wishlistGrid = document.getElementById('wishlist-grid');
+            const emptyView = document.getElementById('empty-wishlist-view');
+
+            const WISHLIST_KEY = 'vogue_wishlist';
+
+            // ---------------- Utilities ----------------
+            function getWishlist() {
+                try {
+                    const data = JSON.parse(localStorage.getItem(WISHLIST_KEY));
+                    return Array.isArray(data) ? data : [];
+                } catch {
+                    return [];
+                }
+            }
+
+            function saveWishlist(list) {
+                localStorage.setItem(WISHLIST_KEY, JSON.stringify(list));
+            }
+
+            function removeFromWishlist(productId) {
+                const updated = getWishlist().filter(id => id !== productId);
+                saveWishlist(updated);
+            }
+
+            // ---------------- UI Helpers ----------------
+            function showEmptyView() {
+                wishlistGrid.style.display = 'none';
+                emptyView.style.display = 'block';
+            }
+
+            function showWishlistGrid() {
+                wishlistGrid.style.display = 'grid';
+                emptyView.style.display = 'none';
+            }
+
+            function formatPrice(price) {
+                if (typeof price !== 'number') return '—';
+                return `₹${price.toLocaleString('en-IN')}`;
+            }
+
+            function createProductCard(product) {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.dataset.productId = product._id;
+
+                card.innerHTML = `
+      <div class="product-image-container">
+        <img src="${product.imageUrl}" alt="${product.name}">
+      </div>
+      <div class="product-info">
+        <p class="product-name">${product.name}</p>
+        <p class="product-price">${formatPrice(product.price)}</p>
+      </div>
+      <button class="remove-btn" aria-label="Remove from wishlist">
+        <svg viewBox="0 0 24 24">
+          <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12Z"/>
+        </svg>
+      </button>
+    `;
+
+                card.querySelector('.remove-btn').addEventListener('click', () => {
+                    removeFromWishlist(product._id);
+
+                    card.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+                    card.style.opacity = '0';
+                    card.style.transform = 'scale(0.95)';
+
+                    setTimeout(() => {
+                        card.remove();
+                        if (getWishlist().length === 0) {
+                            showEmptyView();
+                        }
+                    }, 250);
+                });
+
+                return card;
+            }
+
+            // ---------------- Main Loader ----------------
+            async function loadWishlist() {
+                const wishlistIds = getWishlist();
+
+                if (wishlistIds.length === 0) {
+                    showEmptyView();
+                    return;
+                }
+
+                try {
+                    const res = await fetch('http://localhost:3001/api/products');
+                    if (!res.ok) throw new Error('Failed to fetch products');
+
+                    const products = await res.json();
+                    const wishlistProducts = products.filter(p =>
+                        wishlistIds.includes(p._id)
+                    );
+
+                    if (wishlistProducts.length === 0) {
+                        showEmptyView();
+                        return;
+                    }
+
+                    showWishlistGrid();
+                    wishlistGrid.innerHTML = '';
+                    wishlistProducts.forEach(p =>
+                        wishlistGrid.appendChild(createProductCard(p))
+                    );
+
+                } catch (err) {
+                    console.error(err);
+                    wishlistGrid.innerHTML =
+                        '<p style="color:#888;text-align:center;">Unable to load wishlist.</p>';
+                }
+            }
+
+            loadWishlist();
+        });
+    </script>
+</body>
+
+</html>
